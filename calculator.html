@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CALCULATOR</title>
+
+    <style>
+      body {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+      }
+      .myCal {
+        width: 350px;
+        height: 350px;
+        background-color: gray;
+        padding: 10px;
+      }
+
+      .output {
+        height: 40px;
+        line-height: 40px;
+        background-color: white;
+        color: black;
+        margin-bottom: 10px;
+        font-size: 1.4em;
+        text-align: right;
+        font-family: monospace;
+        padding: 0 8px;
+      }
+
+      .row {
+        width: 100%;
+        /* display: block; */
+        /* background-color: aquamarine; */
+        /* border : 1px solid */
+      }
+
+      .btn {
+        width: 50px;
+        height: 50px;
+        padding: 7px;
+        margin: 5px 11px;
+        background-color: azure;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+        font-size: 1.4em;
+        cursor: pointer;
+        display: inline-block;
+      }
+      .btn:hover {
+        background-color: black;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Calculator</h2>
+    <div class="myCal"></div>
+
+    <script>
+      const myCalculator = document.querySelector('.myCal');
+
+      const myKeys = [
+        ['1', '2', '3', '+'],
+        ['4', '5', '6', '-'],
+        ['7', '8', '9', '*'],
+        ['C', '0', '=', '/'],
+      ];
+
+      const myOper = ['+', '-', '*', '/'];
+
+      let myOutput;
+
+      document.addEventListener('DOMContentLoaded', function () {
+        myOutput = document.createElement('div');
+        myOutput.innerHTML = '0';
+        myOutput.classList.add('output');
+        myCalculator.appendChild(myOutput);
+
+        for (let y = 0; y < myKeys.length; y++) {
+          let div = document.createElement('div');
+          div.classList.add('row');
+          myCalculator.appendChild(div);
+          // console.log(div);
+
+          for (let x = 0; x < myKeys[y].length; x++) {
+            // console.log(myKeys[y][x]);
+            let btn = document.createElement('div');
+            btn.innerHTML = myKeys[y][x];
+            btn.classList.add('btn');
+            div.appendChild(btn);
+            btn.addEventListener('click', btnHit);
+          }
+        }
+      });
+
+      function btnHit(e) {
+        // console.log(this.innerText);
+        let myValue = this.innerText;  //iss mein hamesha wo value aaye gi jo mein button click kr k dn ga
+        let myCal = myOutput.innerText; // iss mein hmesha previous value aaye gi, matlab start mein 0, aur agar mein 56 enter krta hn tou 
+        //is mein 5 aaye gi
+        if (myCal == '0') {
+          myCal = '';
+        }
+        if (myValue == '=') {
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval
+        //   console.log(myCal, 'myCal----------');
+          myCal = eval(myCal);
+
+        //   console.log(myCal + ' answer');
+        } else {
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring
+        //   console.log(myCal ,myValue, " yCal");
+        //   console.log(myCal.length + " Length");  
+          let lastChar = myCal.substring(myCal.length - 1);
+        //   console.log(myCal.length, lastChar, "last");
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+          if (myOper.includes(myValue)) {
+            if (myOper.includes(lastChar)) {
+              myCal = myCal.substring(0, myCal.length - 1);
+              console.log(myCal, 'value');
+            } else {
+              myCal = eval(myCal);
+              console.log(myCal, 'else');
+            }
+          }
+          myCal = myCal + myValue;
+        //   console.log(myCal);
+        }
+        if (myValue == 'C') {
+          myCal = 0;
+        }
+        myOutput.innerText = myCal;
+        // console.log(myCal);
+      }
+    </script>
+
+
+  </body>
+</html>

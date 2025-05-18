@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <style>
+
+        *{
+            margin : 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        section{
+            height : 100vh;
+            width : 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calc{
+            height : 400px;
+            width : 350px;
+            background-color: darkgrey;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .output{
+            height : 50px;
+            background-color: white;
+            color : black;
+            font-size: 20px;
+            line-height: 50px;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .row{
+            width : 100%;
+            background-color: aqua;
+            /* border : 1px solid; */
+            margin-top: 18px;
+        }
+
+        .btn{
+            height : 60px;
+            width : 60px;
+            background-color: red;
+            display: inline-block;
+            margin-left: 18px;
+            text-align: center;
+            font-size: 35px;
+            line-height: 60px;
+            cursor: pointer;
+            color : white
+            /* padding: 10px; */
+        }
+
+        .btn:hover{
+            background-color: black;
+            color : white
+        }
+
+    </style>
+
+</head>
+<body>
+    
+    <section>
+
+        <h1>CALCULATOR</h1>
+
+        <div class = "calc"></div>
+
+
+    </section>
+
+
+    <script>
+
+        const calc = document.querySelector('.calc')
+
+        const keys = [
+            [1, 2, 3, '+'],
+            [4, 5, 6, '-'],
+            [7, 8, 9, '*'],
+            ['C', 0, '=', '/']
+        ]
+
+        const opers = ['+', '-', '/', '*']
+
+        let output
+
+        document.addEventListener('DOMContentLoaded', function(){
+            output = document.createElement('div')
+            output.classList.add('output')
+            output.innerHTML = '0'
+            calc.appendChild(output)
+
+            for(let i = 0; i < keys.length; i++){
+                let div = document.createElement('div')
+                div.classList.add('row')
+                calc.appendChild(div)
+            
+                for(let j = 0; j < keys[i].length; j++){
+                    let btn = document.createElement('div')
+                    btn.classList.add('btn')
+                    btn.innerHTML = keys[i][j]
+                    div.appendChild(btn)
+                    btn.addEventListener('click', hitBtn)
+                }
+            }
+        })
+
+        function hitBtn(){
+            let myValue = this.innerHTML
+            let myCal = output.innerHTML
+
+            if(myCal === '0'){
+                myCal = ''
+            }
+
+            if(myValue === '='){
+                myCal = eval(myCal)
+            }else{
+                let lastChar = myCal.substring(myCal.length - 1)
+                //If myCal is "12+3", lastChar will be "3".
+                //If myCal is "12+", lastChar will be "+".
+
+                if(opers.includes(myValue)){ //opers = ['+', '-', '/', '*']
+                //If myValue is "+", "*" (an operator), the condition is true.
+                //If myValue is "2", "7" (not an operator), the condition is false.
+
+                //If the Clicked Value(myValue) is an Operator, Check the Last Character
+                    if(opers.includes(lastChar)){
+
+                        //If myCal is "12+" and lastChar is "+", the condition is true.
+                        //If myCal is "12+3" and lastChar is "3", the condition is false.
+
+                        myCal = myCal.substring(0, myCal.length - 1) //ye line operator ko duplicate nai honay deti
+                    }else{
+                        myCal = eval(myCal)
+                    }
+                }
+                
+                myCal = myCal + myValue
+            }
+
+            if(myValue === 'C'){
+                myCal = '0'
+            }
+
+            output.innerHTML = myCal
+
+        }
+
+
+    </script>
+
+
+</body>
+</html>
